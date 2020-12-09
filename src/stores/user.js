@@ -1,9 +1,14 @@
 const USER_INFO = 'user/USER_INFO';
-const ETH_INFO = 'user/ETH_INFO';
 
-export const userInfo = (uid) => ({
+export const userInfo = ({
+  uid,
+  ca,
+  email
+}) => ({
   type: USER_INFO,
-  uid
+  uid,
+  ca,
+  email
 });
 
 const initialState = {
@@ -15,7 +20,9 @@ const user = (state = initialState, action) => {
     case USER_INFO: {
       return {
         ...state,
-        uid: action.uid
+        uid: action.uid,
+        ca: action.ca,
+        email: action.email
       }
     }
     default: {

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = ({ text, y }) => {
-  return <Btn y={y}>{text}</Btn>
+const Button = ({ text, y, handleClick }) => {
+  return <Btn y={y} onClick={handleClick}>{text}</Btn>
 }
 
 const Btn = styled.button`

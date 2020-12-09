@@ -1,21 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import Web3 from 'web3';
+import UploadAPI from '../backend/UploadAPI';
 import Button from '../components/Button';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router';
 
 const Upload = () => {
+  const [file, setFile] = useState(null);
+  const [price, setPrice] = useState(0); // ether
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [conductCategory, setconductCategory] = useState('');
+  const user = useSelector(state => state.user);
+
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+  }
+  const history = useHistory();
+  const handleClick = async () => {
+    try {
+      const uuid = await UploadAPI.uploadImageWithInfo({
+        image: file,
+        sellCA: user.ca,
+        userUid: user.uid,
+        price: price,
+        content: content,
+        title: title,
+        conductCategory: conductCategory
+      });
+      setFile(null);
+      setPrice(0);
+      setContent('');
+      setTitle('');
+      toast.success('업로드에 성공했습니다!');
+      setTimeout(() => {
+        history.push(`/detail/${uuid}`);
+      }, 1000);
+    } catch (e) {
+      toast.error('업로드에 실패했습니다');
+    }
+  }
+
   return (
     <Container>
       <Title>Upload Page</Title>
       <UploadContainer>
-        <FileInput type="file" />
-        <Button y={35} text={'UPLOADING'} />
-        <ItemInfoContainer>
-          <Input placeholder="Unique ID" />
-          <Input placeholder="Data URI" />
-          <Input placeholder="Unique ID" />
-          <Input placeholder="Auction title" />
-          <Input placeholder="Price" />
+        <FileInput type="file" onChange={handleFile} />
+        <Button y={35} text={'UPLOADING'} handleClick={handleClick} />
+        <ItemInfoContainer> 
+          <span>price</span>
+          <Input value={price} onChange={(e) => setPrice(e.target.value)} />
+          <span>title</span>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <span>content</span>
+          <Input value={content} onChange={(e) => setContent(e.target.value)} />
+          <span style={{
+            marginBottom: 10
+          }}>category</span>
+          <select onChange={(e) => {
+            setconductCategory(e.currentTarget.value);
+          }} style={{
+            height: 40,
+            fontSize: '20px'
+          }}>
+            <option value="fashion">Fashion</option>
+            <option value="it">IT</option>
+            <option value="health">Health</option>
+          </select>
         </ItemInfoContainer>
       </UploadContainer>
     </Container>
@@ -69,6 +122,8 @@ const Input = styled.input`
   & + & {
     margin-top: 20px;
   }
+
+  margin-bottom: 25px;
 `;
 
 export default Upload;

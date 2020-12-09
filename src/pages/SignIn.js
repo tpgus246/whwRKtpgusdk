@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import AuthAPI from '../backend/AuthAPI';
 
@@ -6,22 +8,62 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleClick = async () => {
-    const data = await AuthAPI.signIn(email, password);
-    console.log(data);
-  }
+  const user = useSelector(state => state.user);
+  const history = useHistory();
+  useEffect(() => {
+    if (!!user.uid) {
+      history.push('/');
+    }
+  }, [history, user.uid]);
 
   return (
     <Container>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input password={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleClick}>submit</button>
+      <FormBox>
+        <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder={'Email'} />
+        <Input password={password} onChange={(e) => setPassword(e.target.value)} placeholder={'Password'} />
+        <Button onClick={async () => {
+          await AuthAPI.signIn(email, password);
+          console.log('login');
+        }}>submit</Button>
+      </FormBox>
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 100%;
+`;
+
+const FormBox = styled.div`
+  margin: 0 auto;
+  margin-top: 100px;
+  padding: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1), 0 2px 12px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid #d6d6d6;
+  font-size: 24px;
+
+  & + & {
+    margin-top: 20px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Button = styled.button`
+  border: none;
+  background-color: #2784ff;
+  color: white;
+  padding: 10px;
+  font-size: 24px;
+  margin-top: 30px;
 `;
 
 export default Login;

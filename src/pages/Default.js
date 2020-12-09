@@ -1,18 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../assets/logo.png';
-import { AuctionAPIs, web3Data } from '../contract/MyMixin';
 
 
 const Default = () => {
-  const handleClick = async () => {
-    await AuctionAPIs.getAuctions().then(() => (res) => {
-      console.log(res);
-    });
-  }
   return (
     <Container>
-      <LogoContainer onClick={handleClick}>
+      <LogoContainer>
         <LogoImage src={logo} />
       </LogoContainer>
       <WelcomeMessage>

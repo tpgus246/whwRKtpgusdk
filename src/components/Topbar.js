@@ -11,9 +11,9 @@ const Topbar = () => {
       <Bar>
         <Logo to="/">COUPANG CHAIN</Logo>
         <Menu>
-          <MenuItem to="/menu/it">Fashion</MenuItem>
-          <MenuItem to="/menu/it">IT</MenuItem>
-          <MenuItem to="/menu/it">Health</MenuItem>
+          <MenuItem to="/items/fashion">Fashion</MenuItem>
+          <MenuItem to="/items/it">IT</MenuItem>
+          <MenuItem to="/items/health">Health</MenuItem>
         </Menu>
         <AuthOption>
           {user.uid === '' ? (
