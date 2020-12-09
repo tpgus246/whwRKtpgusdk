@@ -7,8 +7,13 @@ const Core = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const getUser = async () => {
-      const data = (await AuthAPI.getUserInfo()).data();
-      dispatch(userInfo(data));
+      try {
+        const data = (await AuthAPI.getUserInfo()).data();
+        dispatch(userInfo(data));
+      } catch (e) {
+        console.log(e);
+      }
+      
     }
     getUser();
   }, []);

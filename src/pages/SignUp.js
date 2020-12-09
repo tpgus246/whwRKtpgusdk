@@ -19,7 +19,7 @@ const SignUp = () => {
         <Button onClick={async () => {
           await AuthAPI.signUp(email, password, ca);
           toast.success('회원가입에 성공헀습니다.');
-          history.push('/login');
+          history.push('/signin');
         }}>submit</Button>
       </FormBox>
     </Container>

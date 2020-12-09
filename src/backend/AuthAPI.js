@@ -19,10 +19,10 @@ const getUserInfo = async () => {
 			if (!res) {
 				resolve(false);
 			}
-			resolve(res.uid);
+			resolve(res?.uid);
 		});
 	});
-	
+	if (userUid === false) return '123';
 	return await firebase.firestore().collection('users').doc(userUid).get();
 }
 
