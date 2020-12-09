@@ -22,7 +22,6 @@ const Detail = () => {
       const id = items.findIndex(elem => elem.uuid === uid);
       if (id === -1) {
         const data = await UtilsAPI.getItem(uid);
-        console.log(data.data());
         setTarget({
           ...data.data(),
           image: await firebase.storage().refFromURL(data.data().image).getDownloadURL()

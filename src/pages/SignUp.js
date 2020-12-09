@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import AuthAPI from '../backend/AuthAPI';
 
@@ -8,26 +8,18 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [ca, setCa] = useState('');
-  const [privateKey, setPrivateKey] = useState('');
 
-  const user = useSelector(state => state.user);
   const history = useHistory();
-  useEffect(() => {
-    if (!!user.uid) {
-      history.push('/');
-    }
-  }, [history, user.uid]);
-  
   return (
     <Container>
       <FormBox>
         <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder={'Email'} />
         <Input password={password} onChange={(e) => setPassword(e.target.value)} placeholder={'Password'} />
         <Input value={ca} onChange={(e) => setCa(e.target.value)} placeholder={'CA'} />
-        <Input value={privateKey} onChange={(e) => setPrivateKey(e.target.value)} placeholder={'privateKey'} />
         <Button onClick={async () => {
-          await AuthAPI.signUp(email, password, ca, privateKey);
-          console.log('register');
+          await AuthAPI.signUp(email, password, ca);
+          toast.success('회원가입에 성공헀습니다.');
+          history.push('/login');
         }}>submit</Button>
       </FormBox>
     </Container>

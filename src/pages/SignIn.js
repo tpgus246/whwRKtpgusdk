@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import AuthAPI from '../backend/AuthAPI';
+import { userInfo } from '../stores/user';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const user = useSelector(state => state.user);
   const history = useHistory();
-  useEffect(() => {
-    if (!!user.uid) {
-      history.push('/');
-    }
-  }, [history, user.uid]);
+  const dispatch = useDispatch();
 
   return (
     <Container>
@@ -23,7 +20,14 @@ const Login = () => {
         <Input password={password} onChange={(e) => setPassword(e.target.value)} placeholder={'Password'} />
         <Button onClick={async () => {
           await AuthAPI.signIn(email, password);
-          console.log('login');
+          const data = await AuthAPI.getUserInfo();
+          dispatch(userInfo({
+            uid: data.data().uid,
+            ca: data.data().ca,
+            email: data.data().email
+          }));
+          toast.success('로그인에 성공헀습니다.');
+          history.push('/');
         }}>submit</Button>
       </FormBox>
     </Container>

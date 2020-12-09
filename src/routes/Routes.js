@@ -35,7 +35,7 @@ const pages = [
     component: Detail
   },
   {
-    path: '/history',
+    path: '/wallet',
     component: History
   }
 ]

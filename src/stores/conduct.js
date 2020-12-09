@@ -10,7 +10,6 @@ const initialState = [];
 const conduct = (state = initialState, action) => {
   switch (action.type) {
     case GET_CONDUCTS: {
-      console.log(action.item);
       return [
         ...action.item
       ]

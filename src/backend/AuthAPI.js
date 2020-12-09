@@ -1,6 +1,6 @@
 import firebase from './config';
 
-const signUp = async (email, password, ca, privateKey) => {
+const signUp = async (email, password, ca) => {
 	const data = await firebase.auth().createUserWithEmailAndPassword(email, password);
 	await firebase.firestore().collection('users').doc(data.user.uid).set({
 		email: email,

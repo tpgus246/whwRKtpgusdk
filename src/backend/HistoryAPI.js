@@ -29,7 +29,6 @@ const buyConduct = async ({
     conductUid,
     now: firebase.firestore.Timestamp.now()
   }
-  console.log(data);
   await firebase.firestore().collection('history').doc(`${uid}`).set(data);
   return data;
 };
